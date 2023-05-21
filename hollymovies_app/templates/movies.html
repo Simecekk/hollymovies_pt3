@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+      /* Table styles */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Alternate row colors */
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      /* Hover effect */
+      tr:hover {
+        background-color: #e2e2e2;
+      }
+    </style>
+</head>
+<body>
+
+<h1>All movies ({{ movies_count }})</h1>
+
+<h2>Best movies</h2>
+<table>
+  <colgroup span="4"></colgroup>
+
+  <tr>
+    <th>Name</th>
+    <th>Rating</th>
+    <th>Genre</th>
+    <th>Country</th>
+  </tr>
+
+  {% for movie in best_movies %}
+  <tr>
+    <td><a href="{% url "movie_detail" movie.id %}">{{ movie.name }}</a></td>
+    <td>{{ movie.rating }}</td>
+    <td>{{ movie.get_genre_display }}</td>
+    <td>{{ movie.country.name }}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+
+<h2>Worst movies</h2>
+<table>
+  <colgroup span="4"></colgroup>
+
+  <tr>
+    <th>Name</th>
+    <th>Rating</th>
+    <th>Genre</th>
+    <th>Country</th>
+  </tr>
+
+  {% for movie in worst_movies %}
+  <tr>
+    <td><a href="{% url "movie_detail" movie.id %}">{{ movie.name }}</a></td>
+    <td>{{ movie.rating }}</td>
+    <td>{{ movie.get_genre_display }}</td>
+    <td>{{ movie.country.name }}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+
+
+</body>
+</html>

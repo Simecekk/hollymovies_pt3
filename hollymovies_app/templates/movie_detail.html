@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ movie.name }}</title>
+    <style>
+      /* Table styles */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Alternate row colors */
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      /* Hover effect */
+      tr:hover {
+        background-color: #e2e2e2;
+      }
+    </style>
+</head>
+<body>
+<h1>Movie detail - {{ movie.name }}</h1>
+<p>{{ movie.description }}</p>
+<br><br>
+
+<h2>Actors</h2>
+<table>
+  <colgroup span="4"></colgroup>
+
+  <tr>
+    <th>Name</th>
+    <th>age</th>
+    <th>Gender</th>
+    <th>Country</th>
+  </tr>
+
+  {% for actor in movie.actors.all %}
+  <tr>
+    <td>{{ actor.name }}</td>
+    <td>{{ actor.age }}</td>
+    <td>{{ actor.get_gender_display }}</td>
+    <td>{{ actor.country.name }}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+
+
+</body>
+</html>
