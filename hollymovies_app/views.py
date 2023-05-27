@@ -1,6 +1,7 @@
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from hollymovies_app.models import Movie
+from hollymovies_app.models import Movie, Comment
 from django.views import View
 from django.views.generic import TemplateView
 
@@ -21,6 +22,15 @@ class AllMoviesView(View):
             "movies_count": Movie.objects.all().count(),
         }
         return TemplateResponse(request, "movies.html", context=context)
+
+
+class CommentLikeView(View):
+
+    def post(self, request, comment_id, *args, **kwargs):
+        comment = Comment.objects.get(id=comment_id)
+        comment.likes += 1
+        comment.save()
+        return redirect("movie_detail", movie_id=comment.movie.id)
 
 
 class MovieDetailView(View):
