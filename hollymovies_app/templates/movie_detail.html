@@ -62,19 +62,31 @@
 <br>
 <h2>Comments</h2>
 <table>
-  <colgroup span="3"></colgroup>
+  <colgroup span="4"></colgroup>
 
   <tr>
     <th>Username</th>
     <th>text</th>
     <th>likes</th>
+    <th></th>
   </tr>
 
-  {% for comment in movie.comments.all %}
+  {% for comment in comments %}
   <tr>
     <td>{{ comment.username }}</td>
     <td>{{ comment.text }}</td>
     <td>{{ comment.likes }}</td>
+    <td>
+        <form action="{% url "movie_comment_like" comment.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" style="color: rgba(10,31,87,0.29); background-color: #65ff00">Like</button>
+        </form>
+        <br>
+        <form action="{% url "movie_comment_dislike" comment.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" style="color: black; background-color: red">Dislike</button>
+        </form>
+    </td>
   </tr>
   {% endfor %}
 

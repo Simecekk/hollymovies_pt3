@@ -33,10 +33,21 @@ class CommentLikeView(View):
         return redirect("movie_detail", movie_id=comment.movie.id)
 
 
+class CommentDislikeView(View):
+
+    def post(self, request, comment_id, *args, **kwargs):
+        comment = Comment.objects.get(id=comment_id)
+        comment.likes -= 1
+        comment.save()
+        return redirect("movie_detail", movie_id=comment.movie.id)
+
+
 class MovieDetailView(View):
     def get(self, request, movie_id, *args, **kwargs):
+        movie = Movie.objects.get(id=movie_id)
         context = {
-            "movie": Movie.objects.get(id=movie_id)
+            "movie": movie,
+            "comments": movie.comments.all().order_by("-likes")
         }
         return TemplateResponse(request, "movie_detail.html", context=context)
 
