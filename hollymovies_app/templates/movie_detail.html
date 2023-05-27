@@ -59,6 +59,25 @@
 
 </table>
 
+<table>
+  <colgroup span="3"></colgroup>
+
+  <tr>
+    <th>Username</th>
+    <th>text</th>
+    <th>likes</th>
+  </tr>
+
+  {% for comment in movie.comments.all %}
+  <tr>
+    <td>{{ comment.username }}</td>
+    <td>{{ comment.text }}</td>
+    <td>{{ comment.likes }}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+
 
 </body>
 </html>

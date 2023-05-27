@@ -51,3 +51,13 @@ class Movie(models.Model):
     genre = models.CharField(choices=GENRE_CHOICES, max_length=20, default=GENRE_COMEDY)
     country = models.ForeignKey(Country, on_delete=models.PROTECT, related_name="movies")
     actors = models.ManyToManyField(Actor, related_name="movies")
+
+    def __str__(self):
+        return self.name
+
+
+class Comment(models.Model):
+    text = models.TextField()
+    likes = models.IntegerField(default=0)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="comments")
+    username = models.CharField(max_length=30)
