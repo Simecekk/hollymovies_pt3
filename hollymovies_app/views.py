@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from hollymovies_app.models import Movie, Comment
+from hollymovies_app.models import Movie, Comment, Contact
 from django.views import View
 from django.views.generic import TemplateView
+from hollymovies_app.forms import ContactForm
 
 
 class HomepageView(TemplateView):
@@ -55,3 +56,33 @@ class MovieDetailView(View):
 def hello_world(request):
     name = request.GET.get("name", "DEFAULT")
     return HttpResponse(f"Hello world {name}")
+
+
+class ContactView(View):
+
+    def get(self, request, *args, **kwargs):
+        # generate form in template
+        context = {
+            "contact_form": ContactForm()
+        }
+        return TemplateResponse(request, "contact.html", context=context)
+
+    def post(self, request, *args, **kwargs):
+        # validate submited form
+        data = request.POST
+        bounded_form = ContactForm(data=data)
+
+        if bounded_form.is_valid():
+            Contact.objects.create(
+                text=bounded_form.cleaned_data["text"],
+                email=bounded_form.cleaned_data["email"],
+                name=bounded_form.cleaned_data["name"],
+                priority=bounded_form.cleaned_data["priority"]
+            )
+            return redirect("success_contact")
+
+        return TemplateResponse(request, "contact.html", context={"contact_form": bounded_form})
+
+
+class SuccessContactView(TemplateView):
+    template_name = "success_contact.html"

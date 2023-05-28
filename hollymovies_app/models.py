@@ -61,3 +61,10 @@ class Comment(models.Model):
     likes = models.IntegerField(default=0)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="comments")
     username = models.CharField(max_length=30)
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    text = models.TextField()
+    priority = models.IntegerField()
