@@ -68,3 +68,35 @@ class Contact(models.Model):
     email = models.EmailField()
     text = models.TextField()
     priority = models.IntegerField()
+
+
+class CinemaScreening(models.Model):
+    movie = models.ForeignKey(
+        Movie,
+        on_delete=models.CASCADE,
+        related_name="cinema_screenings"
+    )
+    cinema = models.ForeignKey(
+        "Cinema",
+        on_delete=models.CASCADE,
+        related_name="cinema_screenings"
+    )
+    screening_time = models.DateTimeField()
+
+
+class Cinema(models.Model):
+    name = models.CharField(max_length=150)
+    description = models.TextField()
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.PROTECT,
+        related_name="cinemas"
+    )
+    screenings = models.ManyToManyField(
+        Movie,
+        through=CinemaScreening,
+        related_name="cinemas"
+    )
+
+    def __str__(self):
+        return self.name
