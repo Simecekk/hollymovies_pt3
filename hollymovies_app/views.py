@@ -4,7 +4,7 @@ from django.template.response import TemplateResponse
 from hollymovies_app.models import Movie, Comment, Contact
 from django.views import View
 from django.views.generic import TemplateView
-from hollymovies_app.forms import ContactForm
+from hollymovies_app.forms import ContactForm, CommentForm
 
 
 class HomepageView(TemplateView):
@@ -48,7 +48,8 @@ class MovieDetailView(View):
         movie = Movie.objects.get(id=movie_id)
         context = {
             "movie": movie,
-            "comments": movie.comments.all().order_by("-likes")
+            "comments": movie.comments.all().order_by("-likes"),
+            "comment_form": CommentForm()
         }
         return TemplateResponse(request, "movie_detail.html", context=context)
 
@@ -86,3 +87,18 @@ class ContactView(View):
 
 class SuccessContactView(TemplateView):
     template_name = "success_contact.html"
+
+
+class AddCommentView(View):
+
+    def post(self, request, movie_id, *args, **kwargs):
+        movie = Movie.objects.get(id=movie_id)
+        bounded_form = CommentForm(data=request.POST)
+        if bounded_form.is_valid():
+            Comment.objects.create(
+                username=bounded_form.cleaned_data["username"],
+                movie=movie,
+                text=bounded_form.cleaned_data["text"]
+            )
+
+        return redirect("movie_detail", movie_id=movie_id)
