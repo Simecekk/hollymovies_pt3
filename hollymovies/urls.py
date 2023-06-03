@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 
 from hollymovies_app.views import hello_world, HomepageView, AllMoviesView, MovieDetailView, CommentLikeView, \
-    CommentDislikeView, ContactView, SuccessContactView, AddCommentView
+    CommentDislikeView, ContactView, SuccessContactView, AddCommentView, CinemaListView, CinemaDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +30,7 @@ urlpatterns = [
     path("movie/comment/dislike/<int:comment_id>/", CommentDislikeView.as_view(), name="movie_comment_dislike"),
     path("contact/", ContactView.as_view(), name="contact"),
     path("success/contact/", SuccessContactView.as_view(), name="success_contact"),
-    path("add/comment/<int:movie_id>/", AddCommentView.as_view(), name="add_comment")
+    path("add/comment/<int:movie_id>/", AddCommentView.as_view(), name="add_comment"),
+    path("cinemas/", CinemaListView.as_view(), name="cinema_list"),
+    path("cinema/<int:pk>/", CinemaDetailView.as_view(), name="cinema_detail"),
 ]

@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from hollymovies_app.models import Movie, Comment, Contact
+from hollymovies_app.models import Movie, Comment, Contact, Cinema
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, DetailView
 from hollymovies_app.forms import ContactForm, CommentForm
 
 
@@ -102,3 +102,13 @@ class AddCommentView(View):
             )
 
         return redirect("movie_detail", movie_id=movie_id)
+
+
+class CinemaListView(ListView):
+    model = Cinema
+    template_name = "cinema_list.html"
+
+
+class CinemaDetailView(DetailView):
+    model = Cinema
+    template_name = "cinema_detail.html"

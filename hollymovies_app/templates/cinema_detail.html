@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+      /* Table styles */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Alternate row colors */
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      /* Hover effect */
+      tr:hover {
+        background-color: #e2e2e2;
+      }
+    </style>
+</head>
+<body>
+
+<h1>Cinema detail - {{ object.name }}</h1>
+
+<p>{{ object.description }}</p>
+
+<h2>Screenings</h2>
+
+<table>
+  <colgroup span="4"></colgroup>
+
+  <tr>
+    <th>movie</th>
+    <th>Screening time</th>
+  </tr>
+
+  {% for screening in object.cinema_screenings.all %}
+  <tr>
+    <td><a href="{% url "movie_detail" screening.movie.id %}">{{ screening.movie.name }}</a></td>
+    <td>{{ screening.screening_time }}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+
+</body>
+</html>

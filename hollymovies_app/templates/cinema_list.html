@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+      /* Table styles */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Alternate row colors */
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      /* Hover effect */
+      tr:hover {
+        background-color: #e2e2e2;
+      }
+    </style>
+</head>
+<body>
+
+<h1>All cinemas</h1>
+
+<table>
+  <colgroup span="4"></colgroup>
+
+  <tr>
+    <th>Name</th>
+    <th>description</th>
+    <th>Country</th>
+  </tr>
+
+  {% for cinema in object_list %}
+  <tr>
+    <td><a href="{% url "cinema_detail" cinema.id %}">{{ cinema.name }}</a></td>
+    <td>{{ cinema.description }}</td>
+    <td>{{ movie.country.name }}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+
+</body>
+</html>
