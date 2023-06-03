@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 
 class Country(models.Model):
@@ -51,6 +52,7 @@ class Movie(models.Model):
     genre = models.CharField(choices=GENRE_CHOICES, max_length=20, default=GENRE_COMEDY)
     country = models.ForeignKey(Country, on_delete=models.PROTECT, related_name="movies")
     actors = models.ManyToManyField(Actor, related_name="movies")
+    # TODO add image
 
     def __str__(self):
         return self.name
@@ -100,3 +102,6 @@ class Cinema(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_actual_screenings(self):
+        return self.cinema_screenings.filter(screening_time__day=timezone.now().day)
