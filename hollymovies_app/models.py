@@ -52,7 +52,7 @@ class Movie(models.Model):
     genre = models.CharField(choices=GENRE_CHOICES, max_length=20, default=GENRE_COMEDY)
     country = models.ForeignKey(Country, on_delete=models.PROTECT, related_name="movies")
     actors = models.ManyToManyField(Actor, related_name="movies")
-    # TODO add image
+    image = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.name

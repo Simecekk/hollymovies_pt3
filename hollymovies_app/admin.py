@@ -1,9 +1,19 @@
 from django.contrib import admin
+from django.utils.html import format_html
+
 from hollymovies_app.models import Country, Movie, Actor, Comment, Contact, Cinema, CinemaScreening
 
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ["name", "genre", "country", "id"]
+    list_display = ["name", "display_image", "genre", "country", "id"]
+
+    def display_image(self, obj):
+        if obj.image:
+            return format_html(f'<img src="{obj.image.url}" width="50" height="50">')
+        else:
+            return "No Image"
+
+    display_image.short_description = "Image"
 
 
 class CountryAdmin(admin.ModelAdmin):

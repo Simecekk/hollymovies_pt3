@@ -10,4 +10,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         two_weeks_old_dt = timezone.now() - timedelta(days=14)
         cinema_screenings = CinemaScreening.objects.filter(screening_time__lte=two_weeks_old_dt)
-        cinema_screenings.delete()
+        deleted = cinema_screenings.delete()[0]
+        print(f"cleared: {deleted}")
