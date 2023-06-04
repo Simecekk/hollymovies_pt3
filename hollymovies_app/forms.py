@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+
 from hollymovies_app.models import Comment, CinemaTicket
 
 
@@ -36,7 +37,11 @@ class CinemaTicketForm(forms.ModelForm):
     def __init__(self, screening=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.screening = screening
-        self.fields["quantity"] = forms.IntegerField(max_value=screening.available_tickets, min_value=1)
+        self.fields["quantity"] = forms.IntegerField(
+            widget=forms.NumberInput(attrs={"onchange": "calculateTotalPrice()"}),
+            max_value=screening.available_tickets,
+            min_value=1,
+        )
 
     def clean_quantity(self):
         value = int(self.data["quantity"])

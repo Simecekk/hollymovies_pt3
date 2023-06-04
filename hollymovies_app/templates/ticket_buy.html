@@ -11,6 +11,17 @@
     {{ ticket_form.as_p }}
     <button type="submit">Buy</button>
 </form>
+<br>
+Total Price: <span id="totalPrice">0.00</span>
+
+<script>
+    function calculateTotalPrice() {
+        var price = {{ screening.price }};
+        var quantity = parseInt(document.getElementById('id_quantity').value);
+        var totalPrice = price * quantity;
+        document.getElementById('totalPrice').innerHTML = totalPrice.toFixed(2);
+    }
+</script>
 
 </body>
 </html>
