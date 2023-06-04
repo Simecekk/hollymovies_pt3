@@ -49,7 +49,7 @@
   <tr>
     <td><a href="{% url "cinema_detail" cinema.id %}">{{ cinema.name }}</a></td>
     <td>{{ cinema.description }}</td>
-    <td>{{ movie.country.name }}</td>
+    <td>{{ cinema.country.name }}</td>
   </tr>
   {% endfor %}
 

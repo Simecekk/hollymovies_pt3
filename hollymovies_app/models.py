@@ -84,6 +84,8 @@ class CinemaScreening(models.Model):
         related_name="cinema_screenings"
     )
     screening_time = models.DateTimeField()
+    max_capacity = models.IntegerField(default=50)
+    price = models.FloatField(default=100)
 
 
 class Cinema(models.Model):
@@ -105,3 +107,14 @@ class Cinema(models.Model):
 
     def get_actual_screenings(self):
         return self.cinema_screenings.filter(screening_time__day=timezone.now().day)
+
+
+class CinemaTicket(models.Model):
+    buyer_name = models.CharField(max_length=250)
+    quantity = models.IntegerField(validators=[MinValueValidator(1)])
+    screening = models.ForeignKey(
+        CinemaScreening,
+        on_delete=models.PROTECT,
+        related_name="tickets"
+    )
+
