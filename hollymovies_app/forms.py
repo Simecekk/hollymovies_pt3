@@ -28,6 +28,19 @@ class CommentForm(forms.ModelForm):
 
 
 class CinemaTicketForm(forms.ModelForm):
+
     class Meta:
         model = CinemaTicket
         fields = ["buyer_name", "quantity"]
+
+    def __init__(self, screening=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.screening = screening
+        self.fields["quantity"] = forms.IntegerField(max_value=screening.available_tickets, min_value=1)
+
+    def clean_quantity(self):
+        value = int(self.data["quantity"])
+        if value > self.screening.available_tickets:
+            raise ValidationError(f"Error: Max available tickets: {self.screening.available_tickets}")
+        return value
+

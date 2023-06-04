@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Sum
 from django.utils import timezone
 
 
@@ -86,6 +87,13 @@ class CinemaScreening(models.Model):
     screening_time = models.DateTimeField()
     max_capacity = models.IntegerField(default=50)
     price = models.FloatField(default=100)
+
+    @property
+    def available_tickets(self):
+        sold_tickets = self.tickets.aggregate(total_sold=Sum("quantity"))["total_sold"]
+        if not sold_tickets:
+            return self.max_capacity
+        return self.max_capacity - sold_tickets
 
 
 class Cinema(models.Model):

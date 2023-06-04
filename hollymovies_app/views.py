@@ -118,15 +118,16 @@ class TicketBuyView(View):
 
     def get(self, request, screening_id, *args, **kwargs):
         # generate form in template
+        screening = CinemaScreening.objects.get(id=screening_id)
         context = {
-            "ticket_form": CinemaTicketForm(),
-            "screening": CinemaScreening.objects.get(id=screening_id)
+            "ticket_form": CinemaTicketForm(screening=screening),
+            "screening": screening
         }
         return TemplateResponse(request, "ticket_buy.html", context=context)
 
     def post(self, request, screening_id, *args, **kwargs):
         screening = CinemaScreening.objects.get(id=screening_id)
-        bounded_form = CinemaTicketForm(data=request.POST)
+        bounded_form = CinemaTicketForm(data=request.POST, screening=screening)
 
         if bounded_form.is_valid():
             CinemaTicket.objects.create(
