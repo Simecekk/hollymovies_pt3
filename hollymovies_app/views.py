@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from hollymovies_app.models import Movie, Comment, Contact, Cinema
+from hollymovies_app.models import Movie, Comment, Contact, Cinema, CinemaScreening, CinemaTicket
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
-from hollymovies_app.forms import ContactForm, CommentForm
+from hollymovies_app.forms import ContactForm, CommentForm, CinemaTicketForm
 
 
 class HomepageView(TemplateView):
@@ -112,3 +112,32 @@ class CinemaListView(ListView):
 class CinemaDetailView(DetailView):
     model = Cinema
     template_name = "cinema_detail.html"
+
+
+class TicketBuyView(View):
+
+    def get(self, request, screening_id, *args, **kwargs):
+        # generate form in template
+        context = {
+            "ticket_form": CinemaTicketForm(),
+            "screening": CinemaScreening.objects.get(id=screening_id)
+        }
+        return TemplateResponse(request, "ticket_buy.html", context=context)
+
+    def post(self, request, screening_id, *args, **kwargs):
+        screening = CinemaScreening.objects.get(id=screening_id)
+        bounded_form = CinemaTicketForm(data=request.POST)
+
+        if bounded_form.is_valid():
+            CinemaTicket.objects.create(
+                buyer_name=bounded_form.cleaned_data["buyer_name"],
+                quantity=bounded_form.cleaned_data["quantity"],
+                screening=screening
+            )
+            return redirect("cinema_detail", pk=screening.cinema.id)
+        else:
+            context = {
+                "ticket_form": bounded_form,
+                "screening": screening
+            }
+            return TemplateResponse(request, "ticket_buy.html", context=context)

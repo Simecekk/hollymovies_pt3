@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path
 
 from hollymovies_app.views import hello_world, HomepageView, AllMoviesView, MovieDetailView, CommentLikeView, \
-    CommentDislikeView, ContactView, SuccessContactView, AddCommentView, CinemaListView, CinemaDetailView
+    CommentDislikeView, ContactView, SuccessContactView, AddCommentView, CinemaListView, CinemaDetailView, TicketBuyView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,4 +35,5 @@ urlpatterns = [
     path("add/comment/<int:movie_id>/", AddCommentView.as_view(), name="add_comment"),
     path("cinemas/", CinemaListView.as_view(), name="cinema_list"),
     path("cinema/<int:pk>/", CinemaDetailView.as_view(), name="cinema_detail"),
+    path("ticket/buy/<int:screening_id>/", TicketBuyView.as_view(), name="ticket_buy")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

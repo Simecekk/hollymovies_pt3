@@ -46,12 +46,18 @@
   <tr>
     <th>movie</th>
     <th>Screening time</th>
+    <th>Tickets</th>
   </tr>
 
   {% for screening in object.cinema_screenings.all %}
   <tr>
     <td><a href="{% url "movie_detail" screening.movie.id %}">{{ screening.movie.name }}</a></td>
     <td>{{ screening.screening_time }}</td>
+    <td>
+        <p style="color: green"> Available tickets: TODO</p>
+        <p>Price: {{ screening.price }} ,- CZK</p>
+        <a href="{% url "ticket_buy" screening.id %}">Buy</a>
+    </td>
   </tr>
   {% endfor %}
 

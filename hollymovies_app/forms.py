@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from hollymovies_app.models import Comment
+from hollymovies_app.models import Comment, CinemaTicket
 
 
 class BadWordCharField(forms.CharField):
@@ -25,3 +25,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ["username", "text"]
+
+
+class CinemaTicketForm(forms.ModelForm):
+    class Meta:
+        model = CinemaTicket
+        fields = ["buyer_name", "quantity"]
