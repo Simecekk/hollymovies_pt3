@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from hollymovies_app.models import Comment, CinemaTicket
@@ -48,4 +50,14 @@ class CinemaTicketForm(forms.ModelForm):
         if value > self.screening.available_tickets:
             raise ValidationError(f"Error: Max available tickets: {self.screening.available_tickets}")
         return value
+
+
+class RegistrationForm(UserCreationForm):
+    error_messages = {
+        "password_mismatch": "Špatně zadané heslo",
+    }
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
 

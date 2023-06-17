@@ -1,4 +1,4 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -8,7 +8,7 @@ from django.views.generic.edit import FormMixin
 from hollymovies_app.models import Movie, Comment, Contact, Cinema, CinemaScreening, CinemaTicket
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
-from hollymovies_app.forms import ContactForm, CommentForm, CinemaTicketForm
+from hollymovies_app.forms import ContactForm, CommentForm, CinemaTicketForm, RegistrationForm
 
 
 class HomepageView(TemplateView):
@@ -166,3 +166,29 @@ class LoginView(FormMixin, TemplateView):
             return redirect('homepage')
 
         return redirect('login')
+
+
+class LogoutView(View):
+    """
+    NOTE: Django has built it LogoutView (from django.contrib.auth.views import LogoutView)
+    but this django LogoutView expect us to have logout template.
+
+    In our case we will have LogoutView in the base template. So we implement it ourselves.
+    """
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect('homepage')
+
+
+class RegistrationView(FormMixin, TemplateView):
+    template_name = 'registration.html'
+    form_class = RegistrationForm
+
+    def post(self, request,  *args, **kwargs):
+        registration_data = request.POST
+        form = self.form_class(registration_data)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+        else:
+            return TemplateResponse(request, 'registration.html', context={'form': form})
