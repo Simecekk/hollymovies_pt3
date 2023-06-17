@@ -1,6 +1,10 @@
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
+from django.views.generic.edit import FormMixin
+
 from hollymovies_app.models import Movie, Comment, Contact, Cinema, CinemaScreening, CinemaTicket
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
@@ -142,3 +146,23 @@ class TicketBuyView(View):
                 "screening": screening
             }
             return TemplateResponse(request, "ticket_buy.html", context=context)
+
+
+class LoginView(FormMixin, TemplateView):
+    """
+    NOTE: Django has built it LoginView (from django.contrib.auth.views import LoginView).
+
+    Reason why I'm not using it is that I wanted to explain how is it done under the hood
+    """
+    template_name = 'login.html'
+    form_class = AuthenticationForm
+
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect('homepage')
+
+        return redirect('login')
