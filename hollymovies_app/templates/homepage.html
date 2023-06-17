@@ -7,10 +7,15 @@
 <body>
 <h1>Welcome in hollymovies App - {{ title }}</h1>
 
+{% if user.is_authenticated %}
+    <h2>Username: {{ user.username }}</h2>
+{% endif %}
+
 <h2>Navigation</h2>
 <h3><a href="{% url "all_movies" %}">Movies</a></h3>
 <h3><a href="{% url "contact" %}">Contact</a></h3>
 <h3><a href="{% url "cinema_list" %}">Cinemas</a></h3>
+<h3><a href="{% url "login" %}">Login</a></h3>
 
 </body>
 </html>
